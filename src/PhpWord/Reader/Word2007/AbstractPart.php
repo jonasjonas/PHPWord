@@ -265,6 +265,7 @@ abstract class AbstractPart
             $xmlReader->registerNamespace('a', 'http://schemas.openxmlformats.org/drawingml/2006/main');
 
             $name = $xmlReader->getAttribute('name', $node, 'wp:inline/a:graphic/a:graphicData/pic:pic/pic:nvPicPr/pic:cNvPr');
+            $title = $xmlReader->getAttribute('descr', $node, 'wp:inline/wp:docPr');
             $embedId = $xmlReader->getAttribute('r:embed', $node, 'wp:inline/a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip');
             if ($name === null && $embedId === null) { // some Converters puts images on a different path
                 $name = $xmlReader->getAttribute('name', $node, 'wp:anchor/a:graphic/a:graphicData/pic:pic/pic:nvPicPr/pic:cNvPr');
@@ -273,7 +274,7 @@ abstract class AbstractPart
             $target = $this->getMediaTarget($docPart, $embedId);
             if (null !== $target) {
                 $imageSource = "zip://{$this->docFile}#{$target}";
-                $parent->addImage($imageSource, null, false, $name);
+                $parent->addImage($imageSource, null, false, $name, $title);
             }
         } elseif ($node->nodeName == 'w:object') {
             // Object
