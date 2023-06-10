@@ -46,7 +46,7 @@ class Document extends AbstractPart
         $this->phpWord = $phpWord;
         $xmlReader = new XMLReader();
         $xmlReader->getDomFromZip($this->docFile, $this->xmlFile);
-        $readMethods = ['w:p' => 'readWPNode', 'w:tbl' => 'readTable', 'w:sectPr' => 'readWSectPrNode'];
+        $readMethods = ['w:p' => 'readWPNode', 'w:tbl' => 'readTable', 'w:sectPr' => 'readWSectPrNode', 'w:sdt' => 'readSDTNode'];
 
         $nodes = $xmlReader->getElements('w:body/*');
         if ($nodes->length > 0) {
@@ -158,6 +158,22 @@ class Document extends AbstractPart
                 $this->readWSectPrNode($xmlReader, $sectPrNode, $section);
             }
             $section = $this->phpWord->addSection();
+        }
+    }
+
+    /**
+     * Read w:sdt node.
+     *
+     * @todo <w:lastRenderedPageBreak>
+     */
+    private function readSDTNode(XMLReader $xmlReader, DOMElement $node, Section &$section): void
+    {
+        // std
+        if ($xmlReader->elementExists('w:sdtContent', $node)) {
+            $pNodes = $xmlReader->getElements('w:sdtContent/w:p', $node);
+            foreach ($pNodes as $pNode) {
+                $this->readParagraph($xmlReader, $pNode, $section);
+            }
         }
     }
 
