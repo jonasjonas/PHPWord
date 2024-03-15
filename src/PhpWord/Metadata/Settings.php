@@ -114,7 +114,7 @@ class Settings
     /**
      * Theme Font Languages.
      *
-     * @var Language
+     * @var ?Language
      */
     private $themeFontLang;
 
@@ -159,6 +159,13 @@ class Settings
      * @var null|bool
      */
     private $doNotHyphenateCaps;
+
+    /**
+     * Enable or disable book-folded printing.
+     *
+     * @var bool
+     */
+    private $bookFoldPrinting = false;
 
     /**
      * @return Protection
@@ -268,8 +275,6 @@ class Settings
 
     /**
      * Set the Visibility of Annotation Types.
-     *
-     * @param TrackChangesView $trackChangesView
      */
     public function setRevisionView(?TrackChangesView $trackChangesView = null): void
     {
@@ -364,22 +369,20 @@ class Settings
 
     /**
      * Returns the Language.
-     *
-     * @return Language
      */
-    public function getThemeFontLang()
+    public function getThemeFontLang(): ?Language
     {
         return $this->themeFontLang;
     }
 
     /**
-     * sets the Language for this document.
-     *
-     * @param Language $themeFontLang
+     * Sets the Language for this document.
      */
-    public function setThemeFontLang($themeFontLang): void
+    public function setThemeFontLang(Language $themeFontLang): self
     {
         $this->themeFontLang = $themeFontLang;
+
+        return $this;
     }
 
     /**
@@ -480,5 +483,17 @@ class Settings
     public function setDoNotHyphenateCaps($doNotHyphenateCaps): void
     {
         $this->doNotHyphenateCaps = (bool) $doNotHyphenateCaps;
+    }
+
+    public function hasBookFoldPrinting(): bool
+    {
+        return $this->bookFoldPrinting;
+    }
+
+    public function setBookFoldPrinting(bool $bookFoldPrinting): self
+    {
+        $this->bookFoldPrinting = $bookFoldPrinting;
+
+        return $this;
     }
 }
