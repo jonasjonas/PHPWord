@@ -152,6 +152,7 @@ class Image extends AbstractElement
      * @param mixed $style
      * @param bool $watermark
      * @param string $name
+     * @param string $title
      */
     public function __construct($source, $style = null, $watermark = false, $name = null, $title = null)
     {
